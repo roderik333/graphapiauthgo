@@ -1,9 +1,14 @@
 package main
 
 import (
+	"fmt"
 	"github.com/roderik333/graphapiauthgo"
 )
 
 func main() {
-	return Auth()
+	authToken := graphapiauthgo.Auth()
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	fmt.Printf("Successfully authenticated: %s", authToken.Token)
 }
