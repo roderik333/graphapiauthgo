@@ -1,4 +1,4 @@
-module roderik/graphapigo
+module roderik/graphapiauthgo
 
 go 1.22.1
 

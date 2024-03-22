@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/roderik333/graphapiauth_golang"
+	"github.com/roderik333/graphapiauthgo"
 )
 
 func main() {
