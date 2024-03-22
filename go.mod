@@ -1,4 +1,4 @@
-module roderik/graphapiauthgo
+module github.com/roderik333/graphapiauthgo
 
 go 1.22.1
 
