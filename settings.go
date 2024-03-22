@@ -1,12 +1,11 @@
 package main
 
 import (
-	"github.com/joho/godotenv"
 	"os"
 	"path/filepath"
 )
 
-type BaseSettings struct {
+type baseSettings struct {
 	ClientSecret string
 	ClientID     string
 	TenantID     string
@@ -16,11 +15,11 @@ type BaseSettings struct {
 
 type Settings struct {
 	BaseDir string
-	Msal    BaseSettings
+	Msal    baseSettings
 }
 
-func NewBaseSettings() BaseSettings {
-	return BaseSettings{
+func getBaseSettings() baseSettings {
+	return baseSettings{
 		ClientSecret: getEnv("client_secret", ""),
 		ClientID:     getEnv("client_id", ""),
 		TenantID:     getEnv("tenant_id", ""),
@@ -29,11 +28,11 @@ func NewBaseSettings() BaseSettings {
 	}
 }
 
-func NewSettings() Settings {
+func GetSettings() Settings {
 	dir, _ := filepath.Abs(filepath.Dir(os.Args[0]))
 	return Settings{
 		BaseDir: dir,
-		Msal:    NewBaseSettings(),
+		Msal:    getBaseSettings(),
 	}
 }
 

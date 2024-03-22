@@ -3,23 +3,16 @@ package main
 import (
 	"context"
 	"fmt"
-	"golang.org/x/oauth2"
+	"github.com/joho/godotenv"
 	"golang.org/x/oauth2/clientcredentials"
 )
 
-type Settings struct {
-	ClientID     string
-	ClientSecret string
-	TenantID     string
-	Scope        string
-}
-
 func FetchAuthToken(settings Settings) (string, error) {
 	config := &clientcredentials.Config{
-		ClientID:     settings.ClientID,
-		ClientSecret: settings.ClientSecret,
-		TokenURL:     fmt.Sprintf("https://login.microsoftonline.com/%s/oauth2/v2.0/token", settings.TenantID),
-		Scopes:       []string{settings.Scope},
+		ClientID:     settings.Msal.ClientID,
+		ClientSecret: settings.Msal.ClientSecret,
+		TokenURL:     fmt.Sprintf("https://login.microsoftonline.com/%s/oauth2/v2.0/token", settings.Msal.TenantID),
+		Scopes:       settings.Msal.Scope,
 	}
 
 	ctx := context.Background()
@@ -31,22 +24,20 @@ func FetchAuthToken(settings Settings) (string, error) {
 	return token.AccessToken, nil
 }
 
-func main() {
-	godotenv.Load()
-	Settings := NewSettings()
-	// Use settings
-	settings := Settings{
-		ClientID:     "your-client-id",
-		ClientSecret: "your-client-secret",
-		TenantID:     "your-tenant-id",
-		Scope:        "your-scope",
-	}
+type AccessToken struct {
+	Token string
+}
 
+func Auth() AccessToken {
+
+	err := godotenv.Load()
+	if err != nil {
+		panic(err)
+	}
+	settings := GetSettings()
 	token, err := FetchAuthToken(settings)
 	if err != nil {
-		fmt.Println(err)
-		return
+		panic(err)
 	}
-
-	fmt.Println("Access token:", token)
+	return AccessToken{Token: token}
 }
